@@ -17,7 +17,7 @@ jobs:
   - name: ls
     plan:
       - get: dremio-demo
-        # trigger: true
+        trigger: true
       - task: build
         privileged: true
         file: dremio-demo/ci/ls.yml
