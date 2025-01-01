@@ -20,7 +20,7 @@ jobs:
         # trigger: true
       - task: build
         privileged: true
-        file: dremio-demo/ci/build.yml
+        file: dremio-demo/ci/ls.yml
   # - name: build-dremio-demo-container
   #   plan:
   #     - get: dremio-demo
