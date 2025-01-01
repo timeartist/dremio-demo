@@ -5,13 +5,13 @@ resources:
     source:
       uri: https://github.com/timeartist/dremio-demo
       branch: main
-  # - name: dremio-demo-image
-  #   type: registry-image
-  #   icon: docker
-  #   source:
-  #     repository: kubeguru/dremio-demo
-  #     username: ((docker-user))
-  #     password: ((auth-docker))
+  - name: dremio-demo-image
+    type: registry-image
+    icon: docker
+    source:
+      repository: thekubeguru/dremio-concourse-demo
+      username: ((docker-user))
+      password: ((docker-access-token))
 
 jobs: 
   - name: ls
@@ -21,17 +21,16 @@ jobs:
       - task: build
         privileged: true
         file: dremio-demo/ci/ls.yml
-  # - name: build-dremio-demo-container
-  #   plan:
-  #     - get: dremio-demo
-  #       trigger: true
-  #     - task: build
-  #       privileged: true
-  #       file: dremio-demo/ci/build.yml
-  #       params:
-  #         CONTEXT: dremio-demo
-  #     - put: dremio-demo-image
-  #       params:
-  #         image: image/image.tar
-  #         version: 99.99.99
-  #         bump_aliases: true
+  - name: build-dremio-demo-container
+    plan:
+      - get: dremio-demo
+        trigger: true
+        passed: [ls]
+      - task: build
+        privileged: true
+        file: dremio-demo/ci/build.yml
+      - put: dremio-demo-image
+        params:
+          image: image/image.tar
+          version: 99.99.99
+          bump_aliases: true

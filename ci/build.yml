@@ -1,0 +1,14 @@
+---
+platform: linux
+image_resource:
+  type: registry-image
+  source:
+    repository: concourse/oci-build-task
+params:
+  CONTEXT: dremio-demo
+run:
+  path: build
+inputs:
+  - name: dremio-demo
+outputs:
+  - name: image
