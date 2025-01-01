@@ -1,0 +1,37 @@
+resources:
+  - name: dremio-demo
+    type: git
+    icon: github
+    source:
+      uri: https://github.com/timeartist/dremio-demo
+      branch: main
+  # - name: dremio-demo-image
+  #   type: registry-image
+  #   icon: docker
+  #   source:
+  #     repository: kubeguru/dremio-demo
+  #     username: ((docker-user))
+  #     password: ((auth-docker))
+
+jobs: 
+  - name: ls
+    plan:
+      - get: dremio-demo
+        # trigger: true
+      - task: build
+        privileged: true
+        file: dremio-demo/ci/build.yml
+  # - name: build-dremio-demo-container
+  #   plan:
+  #     - get: dremio-demo
+  #       trigger: true
+  #     - task: build
+  #       privileged: true
+  #       file: dremio-demo/ci/build.yml
+  #       params:
+  #         CONTEXT: dremio-demo
+  #     - put: dremio-demo-image
+  #       params:
+  #         image: image/image.tar
+  #         version: 99.99.99
+  #         bump_aliases: true
