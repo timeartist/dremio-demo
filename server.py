@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return 'I work!'
+    return 'Hello, Dremio!'
 
 if __name__ == '__main__':
     cmd = argv[1]
