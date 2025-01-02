@@ -11,4 +11,6 @@ run:
   args:
     - -cex
     - |
+      cd dremio-demo
       ls
+      cat pyproject.toml

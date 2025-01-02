@@ -9,7 +9,7 @@ resources:
     type: registry-image
     icon: docker
     source:
-      repository: thekubeguru/dremio-concourse-demo
+      repository: ((docker-user))/dremio-concourse-demo
       username: ((docker-user))
       password: ((docker-access-token))
 
@@ -18,9 +18,9 @@ jobs:
     plan:
       - get: dremio-demo
         trigger: true
-      - task: build
+      - task: show-contents
         privileged: true
-        file: dremio-demo/ci/ls.yml
+        file: dremio-demo/ci/show-contents.yml
   - name: build-dremio-demo-container
     plan:
       - get: dremio-demo
@@ -34,3 +34,11 @@ jobs:
           image: image/image.tar
           version: 99.99.99
           bump_aliases: true
+  - name: test
+    plan:
+      - get: dremio-demo
+        trigger: true
+        passed: [build-dremio-demo-container]
+      - task: test
+        privileged: true
+        file: dremio-demo/ci/test.yml
