@@ -5,7 +5,7 @@ resources:
     source:
       uri: https://github.com/timeartist/dremio-demo
       branch: main
-  - name: dremio-demo-image
+  - name: dremio-demo-container
     type: registry-image
     icon: docker
     source:
@@ -29,14 +29,14 @@ jobs:
       - task: build
         privileged: true
         file: dremio-demo/ci/build.yml
-      - put: dremio-demo-image
+      - put: dremio-demo-container
         params:
           image: image/image.tar
           version: 99.99.99
           bump_aliases: true
   - name: test
     plan:
-      - get: dremio-demo
+      - get: dremio-demo-container
         trigger: true
         passed: [build-dremio-demo-container]
       - task: test

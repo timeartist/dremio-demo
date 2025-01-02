@@ -5,10 +5,13 @@ image_resource:
   source:
     repository: taylorsilva/dcind # docker in docker
 inputs:
-  - name: dremio-demo
+  - name: dremio-demo-container
 run:
   path: bash
   args:
     - -cex
     - |
-      docker run -i thekubeguru/dremio-demo:latest poetry run python3 server.py test
+      source /docker-lib.sh
+      start_docker 
+      docker load -i dremio-demo-container-stage/image.tar
+      docker run -it $(docker image ls -q) poetry run python3 server.py test
