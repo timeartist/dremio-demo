@@ -1,0 +1,18 @@
+---
+platform: linux
+image_resource:
+  type: registry-image
+  source:
+    repository: taylorsilva/dcind # docker in docker
+inputs:
+  - name: dremio-demo-container-stage
+run:
+  path: bash
+  args:
+    - -cex
+    - |
+      source /docker-lib.sh
+      start_docker
+      ls
+      docker load -i dremio-demo-container-stage/image.tar
+      docker run -it $(docker image ls -q) poetry run python3 server.py test

@@ -12,7 +12,13 @@ resources:
       repository: ((docker-user))/dremio-concourse-demo
       username: ((docker-user))
       password: ((docker-access-token))
-
+  - name: dremio-demo-container-stage
+    type: registry-image
+    icon: docker
+    source:
+      repository: ((docker-user))/dremio-concourse-demo-stage
+      username: ((docker-user))
+      password: ((docker-access-token))
 jobs: 
   - name: show-contents
     plan:
@@ -29,7 +35,7 @@ jobs:
       - task: build
         privileged: true
         file: dremio-demo/ci/build.yml
-      - put: dremio-demo-container
+      - put: dremio-demo-container-stage
         params:
           image: image/image.tar
           version: 99.99.99
@@ -39,11 +45,16 @@ jobs:
       - get: dremio-demo
         trigger: true
         passed: [build-dremio-demo-container]
-      - get: dremio-demo-container
+      - get: dremio-demo-container-stage
         trigger: true
         passed: [build-dremio-demo-container]
         params: 
           format: oci
       - task: test
         privileged: true
-        file: dremio-demo/ci/test.yml
+        file: dremio-demo/ci/test-v2.yml
+      - put: dremio-demo-container
+        params:
+          image: dremio-demo-container-stage/image.tar
+          version: 99.99.99
+          bump_aliases: true
