@@ -13,5 +13,5 @@ run:
     - |
       source /docker-lib.sh
       start_docker 
-      docker load -i dremio-demo-container-stage/image.tar
+      docker load -i dremio-demo-container/image.tar
       docker run -it $(docker image ls -q) poetry run python3 server.py test

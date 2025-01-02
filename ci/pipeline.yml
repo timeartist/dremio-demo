@@ -14,7 +14,7 @@ resources:
       password: ((docker-access-token))
 
 jobs: 
-  - name: ls
+  - name: show-contents
     plan:
       - get: dremio-demo
         trigger: true
@@ -25,7 +25,7 @@ jobs:
     plan:
       - get: dremio-demo
         trigger: true
-        passed: [ls]
+        passed: [show-contents]
       - task: build
         privileged: true
         file: dremio-demo/ci/build.yml
@@ -36,6 +36,9 @@ jobs:
           bump_aliases: true
   - name: test
     plan:
+      - get: dremio-demo
+        trigger: true
+        passed: [build-dremio-demo-container]
       - get: dremio-demo-container
         trigger: true
         passed: [build-dremio-demo-container]
